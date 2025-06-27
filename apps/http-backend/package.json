@@ -12,11 +12,13 @@
     "@types/jsonwebtoken": "^9.0.10",
     "cors": "^2.8.5",
     "express": "^5.1.0",
-    "jsonwebtoken": "^9.0.2"
+    "jsonwebtoken": "^9.0.2",
+    "@repo/db": "*"
   },
   "devDependencies": {
     "@repo/backend-common": "*",
     "@repo/common": "*",
+    
     "@repo/typescript-config": "*",
     "@types/cors": "^2.8.19",
     "@types/express": "^5.0.3"

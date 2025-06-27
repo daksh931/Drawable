@@ -5,13 +5,14 @@ import { CreateUserSchema, signInSchema, CreateRoomSchema } from "@repo/common/t
 import { prismaClient } from "@repo/db/client"
 import jwt from "jsonwebtoken"
 
-
+// console.log("prismaClient --------------------->>>>>>>>>>>>>>>",prismaClient)
 const app = express()
 
 app.use(express.json())
 app.use(cors())
 
-app.post("/singup", async (req, res) => {
+app.post("/signup", async (req, res) => {
+    console.log(req.body)
     const parsedData = CreateUserSchema.safeParse(req.body);
     if (!parsedData.success) {
         console.log(parsedData.error)
@@ -47,24 +48,24 @@ app.post("/singup", async (req, res) => {
 
 })
 
-app.post("/signin", async (req, res) => {
-    const parsedData = signInSchema.safeParse(req.body);
-    if (!parsedData.success) {
-        res.json({ message: "Incorrect Inputs" })
-        return
-    }
+// app.post("/signin", async (req, res) => {
+//     const parsedData = signInSchema.safeParse(req.body);
+//     if (!parsedData.success) {
+//         res.json({ message: "Incorrect Inputs" })
+//         return
+//     }
 
-    const user = await prismaClient.user.findOne({ where: { email: parsedData.data.email } })
-    if (!user) {
-        res.status(403).json({ message: "not authorized" });
-        return
-    }
+//     const user = await prismaClient.user.findOne({ where: { email: parsedData.data.email } })
+//     if (!user) {
+//         res.status(403).json({ message: "not authorized" });
+//         return
+//     }
 
-    const token = jwt.sign({
-        userId: user?.id
-    }, JWT_SECRET)
+//     const token = jwt.sign({
+//         userId: user?.id
+//     }, JWT_SECRET)
 
-    res.json({ token })
-})
+//     res.json({ token })
+// })
 
 app.listen(3001)
