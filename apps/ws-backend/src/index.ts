@@ -48,7 +48,7 @@ wss.on('connection', function connection(ws, request) {
         ws,
         rooms:[]
     })
-    console.log(users)
+    // console.log(users)
     ws.on('message', async function message(data) {
         let parseData;
         
@@ -64,7 +64,7 @@ wss.on('connection', function connection(ws, request) {
             user?.rooms.push(parseData.roomId);
         }
         
-        console.log(users)
+        // console.log(users)
         if(parseData.type== "leave_room"){
             const user = users.find(x=> x.ws === ws)
              if (!user) {
@@ -78,15 +78,24 @@ wss.on('connection', function connection(ws, request) {
             const message = parseData.message;
             const roomId = parseData.roomId;
             
-           
+           await prismaClient.chat.create({
+            data:{
+                userId,
+                message,
+                roomId: Number(roomId)
+            }
+           })
+        
 
             users.forEach(user => {
-                if(user.rooms.includes(roomId)){
+                if(user.rooms.includes(String(roomId))){
                     user.ws.send(JSON.stringify({
                         type:"chat",
                         messages:message,
                         roomId
                     }))
+  
+
                 }
             })
         }
